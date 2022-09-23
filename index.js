@@ -1,6 +1,8 @@
 const { TelegramClient } = require('telegram')
 const { StringSession } = require('telegram/sessions')
+const { NewMessage } = require('telegram/events')
 const input = require('input')
+const { regions } = require('./regions.js')
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
@@ -26,18 +28,21 @@ const stringSession = STRING_SESSION
   })
 
   async function eventPrint(event) {
-    const message = event.message
+    if (event.message.sender.username === SOURCE_CHAT_NAME) {
+      const messageText = event.message.text
+      const tag = messageText.split('\n').at(-1)
 
-    // Checks if it's a private message (from user or bot)
-    if (event.isPrivate) {
-      // prints sender id
-      console.log(message.senderId)
-      // read message
-      if (message.text == 'hello') {
-        const sender = await message.getSender()
-        console.log('sender is', sender)
-        await client.sendMessage(sender, {
-          message: `hi your id is ${message.senderId}`,
+      if (!tag.includes('#')) return null
+
+      const regionIndex = regions.findIndex((item) => item.tag === tag)
+
+      if (regionIndex > -1) {
+        const region = regions[regionIndex]
+        const newMessage = messageText
+          .replace(region.tag, '')
+          .replace(region.in, region.out)
+        await client.sendMessage(TARGET_CHAT_ID, {
+          message: newMessage,
         })
       }
     }
@@ -45,8 +50,6 @@ const stringSession = STRING_SESSION
 
   // adds an event handler for new messages
   client.addEventHandler(eventPrint, new NewMessage({}))
-
-  // client.on(events.NewMessage(chats=('air_alert_ua_test')), )
 
   await client.start({
     phoneNumber: async () => await input.text('Please enter your number: '),
@@ -57,5 +60,4 @@ const stringSession = STRING_SESSION
   })
   console.log('You should now be connected.')
   // console.log(client.session.save()) // Save this string to avoid logging in again
-  // await client.sendMessage('targis', { message: 'Hello!' })
 })()
