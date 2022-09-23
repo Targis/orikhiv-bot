@@ -1,0 +1,30 @@
+{
+  "name": "orikhiv-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node --experimental-specifier-resolution=node --require dotenv/config index.js",
+    "dev": "nodemon --experimental-specifier-resolution=node --require dotenv/config index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Targis/orikhiv-bot.git"
+  },
+  "author": "Yurii Kozyk",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Targis/orikhiv-bot/issues"
+  },
+  "homepage": "https://github.com/Targis/orikhiv-bot#readme",
+  "dependencies": {
+    "dotenv": "^16.0.2",
+    "input": "^1.0.1",
+    "telegram": "^2.11.7"
+  },
+
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
