@@ -41,6 +41,7 @@ const stringSession = STRING_SESSION
         const newMessage = messageText
           .replace(region.tag, '')
           .replace(region.in, region.out)
+          .replace('Слідкуйте за подальшими повідомленнями.', '')
         await client.sendMessage(TARGET_CHAT_ID, {
           message: newMessage,
         })
