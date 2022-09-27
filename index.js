@@ -30,7 +30,8 @@ const stringSession = STRING_SESSION
   async function eventPrint(event) {
     if (event.message.sender.username === SOURCE_CHAT_NAME) {
       const messageText = event.message.text
-      const tag = messageText.split('\n').at(-1)
+      const msgArray = messageText.split('\n')
+      const tag = msgArray[msgArray.length - 1]
 
       if (!tag.includes('#')) return null
 
